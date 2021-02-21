@@ -1,0 +1,43 @@
+fragment Post on User {
+    posts {
+        id
+        title
+        body
+        author {
+            username
+        }
+    }
+}
+
+query User(
+    $userId: Int!
+) {
+    user(userId: $userId) {
+        name
+        phone
+        company {
+            name
+        }
+        posts {
+            id
+            title
+            body
+            author {
+                username
+                posts
+            }
+        }
+    }
+}
+
+type Menu {
+    id: String!
+    menu: [Menu]
+}
+
+query Menu {
+    menu {
+        id
+        menu
+    }
+}

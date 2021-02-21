@@ -1,0 +1,121 @@
+directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
+
+input PostInput {
+  userId: Int!
+  title: String!
+  body: String!
+}
+
+input PostUpdateInput {
+  userId: Int
+  title: String
+  body: String
+}
+
+input CommentInput {
+  postId: Int!
+  userId: Int!
+  body: String!
+}
+
+input CommentUpdateInput {
+  body: String
+}
+
+input PaginationInput {
+  limit: Int = 10
+  page: Int = 1
+}
+
+type PostWithPagination {
+  count: Int!
+  currentPage: Int!
+  totalPages: Int!
+  data: [Post!]
+}
+
+type UserWithPagination {
+  count: Int!
+  currentPage: Int!
+  totalPages: Int!
+  data: [User!]
+}
+
+type CommentWithPagination {
+  count: Int!
+  currentPage: Int!
+  totalPages: Int!
+  data: [Comment!]
+}
+
+type Query {
+  user(userId: Int!): User!
+  users(pagination: PaginationInput = {limit: 10, page: 1}): UserWithPagination!
+  post(postId: ID!): Post!
+  posts(pagination: PaginationInput): PostWithPagination!
+  comment(commentId: ID!): Comment!
+  comments(pagination: PaginationInput): CommentWithPagination!
+}
+
+type Mutation {
+  addPost(data: PostInput!): Post!
+  updatePost(postId: ID!, data: PostUpdateInput!): Post!
+  deletePost(postId: ID!): Post!
+  addComment(data: CommentInput!): Comment!
+  updateComment(commentId: ID!, data: CommentUpdateInput!): Comment!
+  deleteComment(commentId: ID!): Comment!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  body: String!
+  author: User!
+  comments: [Comment!]!
+}
+
+type Comment {
+  id: ID!
+  body: String!
+  post: Post!
+  author: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+  username: String!
+  email: String!
+  address: Address
+  phone: String!
+  website: String!
+  company: Company!
+  posts: [Post!]!
+}
+
+type Company {
+  name: String!
+  catchPhrase: String!
+  bs: String!
+}
+
+type Address {
+  street: String!
+  suite: String!
+  city: String!
+  zipcode: String!
+  geo: Geo!
+}
+
+type Geo {
+  lat: Float!
+  lng: Float!
+}
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+# The `Upload` scalar type represents a file upload.
+scalar Upload

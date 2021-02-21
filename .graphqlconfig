@@ -1,0 +1,4 @@
+{
+  "name": "Default Schema",
+  "schemaPath": "src/__generated__/schema.graphql"
+}
